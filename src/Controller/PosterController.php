@@ -51,6 +51,42 @@ class PosterController extends AbstractController
         dd($poster);
         //die();
 
+
+
+        return $this->render('poster/index.html.twig', [
+            'controller_name' => 'PosterController',
+        ]);
+    }
+
+    #[Route('/poster_agrandir/{id}', name: 'poster_get')]
+    public function agrandir(ManagerRegistry $mr, PosterRepository $repo, $id): Response
+    {
+        $manager = $mr->getManager();
+        $poster = $repo->find($id);
+
+        $poster->setTaille($poster->getTaille() + 1);
+
+        $manager->persist($poster);
+        $manager->flush();
+
+        //die();
+
+        return $this->render('poster/index.html.twig', [
+            'controller_name' => 'PosterController',
+        ]);
+    }
+
+    #[Route('/poster_delete/{id}', name: 'poster_get')]
+    public function delete(ManagerRegistry $mr, PosterRepository $repo, $id): Response
+    {
+        $manager = $mr->getManager();
+        $poster = $repo->find($id);
+
+        $manager->remove($poster);
+        $manager->flush();
+
+        //die();
+
         return $this->render('poster/index.html.twig', [
             'controller_name' => 'PosterController',
         ]);
